@@ -10,7 +10,7 @@ expr1Ans =
   , Left ("harold" ++ " hide " ++ "the " ++ "pain")
   )
 
--- | The seStringond task in WHNF
+-- | The secoond task in WHNF
 -- I calculated the value of the expression by my hands and I got False
 expr2Ans :: Bool
 expr2Ans = False
