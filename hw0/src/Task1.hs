@@ -7,8 +7,8 @@ module Task1
   ) where
 
 -- | This function demonstrate type Either.
--- | If only left is given, it constructs a pair from the left element.
--- | If there is a pair on the right, it will return this pair.
+-- If only left is given, it constructs a pair from the left element.
+-- If there is a pair on the right, it will return this pair.
 distributivity :: Either a (b, c) -> (Either a b, Either a c)
 distributivity (Left x)  = (Left x, Left x)
 distributivity (Right y) = (Right (fst y), Right (snd y))
@@ -20,8 +20,8 @@ associator arr = ((fst arr, fst $ snd arr), snd $ snd arr)
 type (<->) a b = (a -> b, b -> a)
 
 -- | This function demonstrate type equivalence.
--- | It accepts expressions a and b.
--- | Returns a pair (a -> b, b -> a)
+-- It accepts expressions a and b.
+-- Returns a pair (a -> b, b -> a)
 eitherAssoc :: Either a (Either b c) <-> Either (Either a b) c
 eitherAssoc = (aToB, bToA)
   where

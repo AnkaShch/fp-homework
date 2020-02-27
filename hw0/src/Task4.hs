@@ -8,7 +8,7 @@ module Task4
 import Data.Function (fix)
 
 -- | Construct an infinite array of repeating elements
--- | iterateElement x == [x, x..]
+-- iterateElement x == [x, x..]
 iterateElement :: a -> [a]
 iterateElement =
   fix $ \rec n ->

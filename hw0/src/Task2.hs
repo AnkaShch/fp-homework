@@ -14,7 +14,7 @@ type Neg a = a -> Void
 doubleNeg :: a -> Neg (Neg a)
 doubleNeg x f = f x
 
- -- | ((Either a (a -> Void)) -> Void) -> Void
+-- | ((Either a (a -> Void)) -> Void) -> Void
 excludedNeg :: Neg (Neg (Either a (Neg a)))
 excludedNeg x = x (Right (x . Left))
 
