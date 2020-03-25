@@ -3,7 +3,21 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: tasty-hspec-1.1.5.1@sha256:531ba79ad1aa8d8c12ca1ae27b6e8125d1d768d98ca5487fe6348b2c34e4f7fa,2003
+    pantry-tree:
+      size: 531
+      sha256: b7de6d6cb063baf9e553650a1df302bda7d5d99b93549cdc64e322347f56f1b7
+  original:
+    hackage: tasty-hspec-1.1.5.1
+- completed:
+    hackage: hspec-hedgehog-0.0.1.1@sha256:bbf992090eb2e3c1b8919150756bb4dc88c8c987992ee6f49ca9d3ec8cbddc96,1371
+    pantry-tree:
+      size: 379
+      sha256: e3c8694eea1df1ad60a71be5153e828128c50f066429127811ecb404a9309598
+  original:
+    hackage: hspec-hedgehog-0.0.1.1
 snapshots:
 - completed:
     size: 524996
