@@ -1,5 +1,21 @@
-module Block2.Task2 (
+module Block2.Task2
+  (
+    MyList (..)
+    , splitOn
+  ) where
 
-) where
+data MyList =
+  String :| [String]
+  deriving (Eq, Show)
 
-newtype MyList a = String | MyList a
+splitOn :: Char -> String -> MyList
+splitOn sep = foldr func ("" :| [])
+  where
+    func ch (x :| xs)
+      | ch == sep = [] :| (x : xs)
+      | otherwise = (ch : x) :| xs
+
+--joinWith :: Char -> MyList -> String
+--joinWith sep (st:|strings) = foldr func st [""]
+--  where
+--    func elm str  = str ++ [sep] ++ elm
