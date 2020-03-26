@@ -10,15 +10,20 @@ module Block1.Tree
   , sizeTree
   ) where
 
+-- | type of binary tree
 data Tree a
   = Leaf
   | Node (Tree a) a [a] (Tree a)
   deriving (Show)
 
+-- | check is tree empty
 isEmptyTree :: Tree a -> Bool
 isEmptyTree Leaf = True
 isEmptyTree _    = False
 
+-- | find element in tree
+-- return Just element, if it was found
+-- and Nothing? if it wan't found
 findElem :: Ord a => a -> Tree a -> Maybe a
 findElem _ Leaf = Nothing
 findElem x (Node left elm _ right)
@@ -26,10 +31,12 @@ findElem x (Node left elm _ right)
   | x < elm = findElem x left
   | otherwise = findElem x right
 
+-- | count elements in tree
 sizeTree :: Tree a -> Int
 sizeTree Leaf = 0
 sizeTree (Node left _ elms right) = 1 + sizeTree left + length elms + sizeTree right
 
+-- | insert element
 insertElem :: Ord a => a -> Tree a -> Tree a
 insertElem x Leaf = Node Leaf x [] Leaf
 insertElem x (Node left elm elms right)
@@ -37,9 +44,12 @@ insertElem x (Node left elm elms right)
   | x < elm = Node (insertElem x left) elm elms right
   | otherwise = Node left elm elms (insertElem x right)
 
+
+-- | construct tree from list
 fromList :: Ord a => [a] -> Tree a
 fromList = foldr insertElem Leaf
 
+-- | delete element from tree
 removeElem :: Ord a => a -> Tree a -> Tree a
 removeElem _ Leaf = Leaf
 removeElem x (Node left elm elms right)
@@ -57,6 +67,7 @@ removeElem x (Node left elm elms right)
     merge (Node llChild leftElm leftElms lrChild) (Node rlChild rightElm rightElms rrChild) =
       Node llChild leftElm leftElms (Node (merge lrChild rlChild) rightElm rightElms rrChild)
 
+-- | set equivalence of two trees
 instance Ord a => Eq (Tree a) where
   Leaf == Leaf = True
   _ == Leaf = False
@@ -64,6 +75,7 @@ instance Ord a => Eq (Tree a) where
   (Node leftA elmA elmsA rightA) == (Node leftB elmB elmsB rightB) =
     (leftA == leftB) && (rightA == rightB) && (elmA == elmB) && (length elmsA == length elmsB)
 
+-- | set folding property for tree
 instance Foldable Tree where
   foldMap :: Monoid m => (a -> m) -> Tree a -> m
   foldMap _ Leaf = mempty
