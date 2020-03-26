@@ -1,8 +1,8 @@
-import           Test.Tasty       (defaultMain, testGroup)
+import Test.Tasty (defaultMain, testGroup)
 
 import qualified TestBlock1.Task1 (test)
 import qualified TestBlock1.Task2 (test)
-import qualified TestBlock1.Tree  (test)
+import qualified TestBlock1.Tree (test)
 
 main :: IO ()
 main = do
