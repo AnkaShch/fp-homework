@@ -1,3 +1,5 @@
+{-# LANGUAGE InstanceSigs #-}
+
 module Block1.Tree
   ( Tree(..)
   , insertElem
@@ -61,3 +63,15 @@ instance Ord a => Eq (Tree a) where
   Leaf == _ = False
   (Node leftA elmA elmsA rightA) == (Node leftB elmB elmsB rightB) =
     (leftA == leftB) && (rightA == rightB) && (elmA == elmB) && (length elmsA == length elmsB)
+
+instance Foldable Tree where
+  foldMap :: Monoid m => (a -> m) -> Tree a -> m
+  foldMap _ Leaf = mempty
+  foldMap f (Node left elm elms right) = leftRes `mappend` f elm `mappend` foldMap f elms `mappend` rightRes
+    where
+      leftRes = foldMap f left
+      rightRes = foldMap f right
+
+  foldr :: (a -> b -> b) -> b -> Tree a -> b
+  foldr _ arr Leaf = arr
+  foldr f arr (Node left elm elms right) = foldr f (foldr f (foldr f arr right) (elm:elms)) left

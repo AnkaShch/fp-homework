@@ -28,7 +28,7 @@ test-suite hw1-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  other-modules:       TestBlock1.Tree TestBlock1.Task2 TestBlock1.Task1
+  other-modules:       TestBlock1.Tree TestBlock1.Task2 TestBlock1.Task1 TestBlock2.Task1
   build-depends:       base
                      , hw1
                      , hspec
