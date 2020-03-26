@@ -3,13 +3,15 @@ module Block3.Task2
   , ThisOrThat (..)
   ) where
 
+-- | type of NonEmpty list
 data NonEmpty a = a :| [a] deriving Show
 
 -- | operator (<>) concat 2 NonEmpty lists
 instance Semigroup (NonEmpty a) where
   (l :| []) <> (r :| right) = l :| (r : right)
   (l :| left) <> (r :| right) = l :| (left <> (r : right))
-  
+
+-- | set equivalence of two NonEmpty lists
 instance Ord a => Eq (NonEmpty a) where
   (l:|[]) == (r:|[])          = l == r
   (l :| left) == (r :| right) = (l == r) && (left == right)

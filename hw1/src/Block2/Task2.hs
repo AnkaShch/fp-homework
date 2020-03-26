@@ -4,18 +4,16 @@ module Block2.Task2
     , splitOn
   ) where
 
+-- | Type of NonEmpty strings list
 data MyList =
   String :| [String]
   deriving (Eq, Show)
 
+-- | split string by separator
+-- | return NonEmpty strings list with result
 splitOn :: Char -> String -> MyList
 splitOn sep = foldr func ("" :| [])
   where
     func ch (x :| xs)
       | ch == sep = [] :| (x : xs)
       | otherwise = (ch : x) :| xs
-
---joinWith :: Char -> MyList -> String
---joinWith sep (st:|strings) = foldr func st [""]
---  where
---    func elm str  = str ++ [sep] ++ elm
