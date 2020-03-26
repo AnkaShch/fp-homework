@@ -1,6 +1,5 @@
 module Block1.Task2
-  (
-    Nat (..)
+  ( Nat(..)
   , intToNat
   , isEven
   , divNat
@@ -11,7 +10,10 @@ module Block1.Task2
   , sumNat
   ) where
 
-data Nat = Z | S Nat deriving Show
+data Nat
+  = Z
+  | S Nat
+  deriving (Show)
 
 sumNat :: Nat -> Nat -> Nat
 sumNat a Z     = a
