@@ -1,3 +1,4 @@
+{-# LANGUAGE BlockArguments   #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE InstanceSigs     #-}
 {-# LANGUAGE LambdaCase       #-}
@@ -7,6 +8,7 @@ module Block6.Parsers
   Parser (..)
   , element
   , eof
+  , listlistParser
   , ok
   , parseCBS
   , parseInt
@@ -127,3 +129,26 @@ parseInt = do
       where
         parseDigit :: Parser Char Int
         parseDigit = fmap digitToInt (satisfy isDigit)
+
+-- | Parse list of list numbers
+--   "2, 3, 4   , 1, 10,    3, 1, 2, 3" -> [[2,3,4],[1,10],[3,1,2,3]]
+listlistParser :: Parser Char [[Int]]
+listlistParser = do
+  list <- createList
+  nexList <- (element ',' *> listlistParser) <|> return []
+  return (list:nexList)
+    where
+      parseSpace = element ' ' *> parseSpace <|> ok
+      parseIntWithSpace = parseSpace *> parseInt <* parseSpace
+      parseCommaInt = element ',' *> parseIntWithSpace
+
+      createList = do
+        size <- parseIntWithSpace
+        list <- getElements size
+        return (size:list)
+          where
+            getElements 0 = return []
+            getElements n = do
+              x <- parseCommaInt
+              xs <- getElements (n - 1)
+              return (x:xs)

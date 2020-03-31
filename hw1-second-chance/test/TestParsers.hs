@@ -46,3 +46,9 @@ test =
       it "asdf" $ runParser parseInt "asdf" `shouldBe` Nothing
       it "-" $ runParser parseInt "-" `shouldBe` Nothing
       it "+1-1" $ runParser parseInt "+1-1" `shouldBe` Just(1, "-1")
+      
+    describe "test listList" $ do
+      it "\"2, 3, 4   , 1, 10,    3, 1, 2, 3\" -> [[2,3,4],[1,10],[3,1,2,3]]" $ 
+        runParser listlistParser "2, 3, 4   , 1, 10,    3, 1, 2, 3"
+        `shouldBe` Just ([[2,3,4],[1,10],[3,1,2,3]],"")
+      it "\"1, -10\" -> [[1, -10]]" $ runParser listlistParser "1, -10" `shouldBe` Just([[1, -10]], "")
