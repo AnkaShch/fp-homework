@@ -28,7 +28,7 @@ test-suite hw1-second-chance-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
-  other-modules:
+  other-modules:       TestParsers
   build-depends:       base
                      , hw1-second-chance
                      , hspec

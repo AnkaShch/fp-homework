@@ -5,19 +5,21 @@
 module Block6.Parsers
   (
   Parser (..)
+  , element
   , eof
   , ok
-  , satisfy
-  , element
-  , stream
-  , parseInt
   , parseCBS
+  , parseInt
+  , satisfy
+  , stream
   ) where
 
 import Control.Applicative
 import Control.Arrow (first)
 import Data.Char
 
+-- | Type for Parser
+--   return Maybe (parsed value, remaining part of the stream)
 newtype Parser s a = Parser{runParser :: [s] -> Maybe (a, [s])}
 
 instance Functor (Parser s) where
@@ -29,8 +31,8 @@ instance Applicative (Parser s) where
   pure f = Parser $ \s -> Just (f, s)
 
   (<*>) :: Parser s (a -> b) -> Parser s a -> Parser s b
-  (<*>) (Parser parseF) (Parser parseArg) = Parser $
-    \s ->
+  (<*>) (Parser parseF) (Parser parseArg) =
+    Parser $ \s ->
       case parseF s of
         Nothing -> Nothing
         Just (f, xs) ->
@@ -60,15 +62,19 @@ instance Monad (Parser s) where
         Nothing      -> Nothing
         Just (a, xs) -> runParser (f a) xs
 
+-- | Parser, which never crashes or absorbs input
 ok :: Parser s ()
 ok = Parser $ \s -> Just((), s)
 
+-- | Checks that the parser has reached the end of the data stream (otherwise it crashes)
 eof :: Parser s ()
 eof =
   Parser $ \case
     [] -> Just ((), [])
     _ -> Nothing
 
+-- | The parser accepts a predicate on a stream element, and returns the element, absorbing it from the stream
+--   if the predicate on the element is True, otherwise it falls
 satisfy :: (s -> Bool) -> Parser s s
 satisfy f =
   Parser $ \case
@@ -78,9 +84,11 @@ satisfy f =
       then Just (x, xs)
       else Nothing
 
+-- | Parse single stream element
 element :: (Eq s) => s -> Parser s s
 element a = satisfy (== a)
 
+-- | Parse many stream elements
 stream :: (Eq s) => [s] -> Parser s [s]
 stream [] = return []
 stream (x:xs) = resElm >>= resStream
@@ -92,11 +100,15 @@ stream (x:xs) = resElm >>= resStream
           Nothing       -> Nothing
           Just (r, xs') -> Just (c : r, xs')
 
+-- | Parser of correct bracket sequences
+--   falls if the sequence is incorrect, and doesn't fall if it is correct
 parseCBS :: Parser Char ()
 parseCBS = parseCBS' <* eof
   where
-    parseCBS' = element '(' *> parseCBS' <* element ')' <|> ok
+    parseCBS' = element '(' *> parseCBS' <* element ')' <* parseCBS' <|> ok
 
+-- | Parse Integer that can be preceded by a + or -
+--   return Just (parse number, remaining part of the stream) or Nothing? if process failed
 parseInt :: Parser Char Int
 parseInt = do
   sign <- stream "-" <|> stream "+" <|> stream ""

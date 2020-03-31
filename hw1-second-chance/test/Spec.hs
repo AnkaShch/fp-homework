@@ -1,2 +1,8 @@
+import Test.Tasty (defaultMain)
+
+import qualified TestParsers (test)
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  tests <- TestParsers.test
+  defaultMain tests
