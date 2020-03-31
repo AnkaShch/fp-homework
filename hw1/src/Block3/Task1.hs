@@ -16,7 +16,7 @@ maybeConcat (x:xs)
 
 -- | concat all Left and all Right from [Either a b] and return pair of result
 -- >> [Left (Sum 3), Right [1,2,3], Left (Sum 5), Right [4,5]]
--- << (Sum {getSum = 8}, [1,2,3,4,5])//
+-- << (Sum {getSum = 8}, [1,2,3,4,5])
 eitherConcat :: (Monoid left, Monoid right) => [Either left right] -> (left, right)
 eitherConcat []           = (mempty, mempty)
 eitherConcat (Left x:xs)  = (x, mempty) <> eitherConcat xs
